@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import dashboardImg from '../assets/platform-dashboard.png'
 import preimpactImg from '../assets/platform-preimpact.png'
+import overviewImg from '../assets/platform-overview.png'
+import agentsImg from '../assets/platform-agents.png'
+import publicAlertImg from '../assets/platform-public-alert.png'
+import medicalImg from '../assets/platform-medical.png'
 
 const shots = [
   {
@@ -20,32 +24,79 @@ const shots = [
   },
   {
     src: preimpactImg,
-    title: 'Prototype 2 — 15-Minute Pre-Impact View',
+    title: 'Prototype 2 — Risk Map (Pre-Impact)',
     alt: 'Fictional pre-impact dashboard showing ETA to impact zone, vessel information, recommended pre-approved response playbook and quick decision actions',
     caption:
       'The pre-impact decision view: time to possible impact, ship status, the recommended pre-approved playbook and one-tap decision controls.',
     details: [
       'Time to possible impact: 15 minutes (simulated countdown)',
-      'Ship status: loss of manoeuvrability, likely',
-      'Recommended response comes from the pre-approved Flåm evacuation plan v3.2',
+      'Ship status and approach data with impact time marker',
+      'Recommended response comes from the pre-approved Flåm evacuation plan',
       'Decision controls: activate response, send public alert, notify medical network',
       'Safe-zone confirmation and responder activation',
-      'Population at risk, harbour status, visibility — all simulated',
+      'Estimated time to impact zone, closest approach, harbour status — all simulated',
+    ],
+  },
+  {
+    src: agentsImg,
+    title: 'Prototype 3 — Agent Orchestration',
+    alt: 'Fictional agent orchestration screen showing the full agent tree from human and ship agent through the main orchestrator to twelve specialised agents, with live activity feed and status summary',
+    caption:
+      'The agent orchestration view: the full agent tree under one Main Agent / Orchestrator, a live agent activity feed and an agent status summary.',
+    details: [
+      'Human / Captain → Ship Agent → Main Agent / Orchestrator → 12 specialised agents',
+      'Per-agent status: Active, Processing, Standby, Connected',
+      'Live agent activity feed with timestamps (e.g. evacuation guidance sent to Zone A users)',
+      'Operational insights panel: hospital capacity, helicopters, police, risk level',
+      'Playbook, routing and activation controls for the fictional operator',
+    ],
+  },
+  {
+    src: publicAlertImg,
+    title: 'Prototype 4 — Public Alert Management',
+    alt: 'Fictional public alert composer showing pre-approved alert templates, official actions, target area selection, multilingual message preview, targeting map and mobile app preview',
+    caption:
+      'The public alert composer: operators pick a pre-approved template and official actions — the message text itself cannot be freely edited, only reviewed and sent.',
+    details: [
+      'Pre-approved alert templates (possible vessel collision – evacuate zone)',
+      'Official actions as checkboxes: evacuate Zone A, avoid harbour, open safe zones, route north',
+      'Multilingual preview (Norsk, English, Español, Deutsch) via the Translation Agent',
+      'Targeting map: who receives the alert, estimated people and devices reached',
+      'Live mobile app preview showing exactly what citizens will see',
+      'Review → Approve & Send workflow with full alert history',
+    ],
+  },
+  {
+    src: medicalImg,
+    title: 'Prototype 5 — Medical & Rescue Coordination',
+    alt: 'Fictional medical and rescue coordination dashboard showing triage zones on a map, hospital capacity table, responder dispatch with ETAs and live updates',
+    caption:
+      'The medical & rescue view: triage zones, hospital capacity, responder dispatch with ETAs — the data the Medical, Paramedic and Hospital Agents keep in sync.',
+    details: [
+      'Hospital capacity overview: beds, occupancy, trauma beds per facility',
+      'Triage zones on the map with casualty estimates and medical team assignment',
+      'Responder dispatch list: ambulances, rescue helicopters, police units with ETAs',
+      'Medical supply status and police/security support panels',
+      'Live updates feed from the Hospital, Medical, Helicopter and Police Agents',
     ],
   },
 ]
 
 export function PlatformShowcase() {
   const [open, setOpen] = useState<number | null>(null)
+  const [overviewOpen, setOverviewOpen] = useState(false)
 
   useEffect(() => {
-    if (open === null) return
+    if (open === null && !overviewOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(null)
+      if (e.key === 'Escape') {
+        setOpen(null)
+        setOverviewOpen(false)
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [open])
+  }, [open, overviewOpen])
 
   return (
     <section id="platform" aria-labelledby="platform-title">
@@ -58,6 +109,28 @@ export function PlatformShowcase() {
           operator does not have to type everything during an emergency. Both images below are
           fictional concept visualisations. Click to enlarge.
         </p>
+
+        <figure className="platform-figure" style={{ marginBottom: 'var(--sp-8)' }}>
+          <button
+            onClick={() => setOverviewOpen(true)}
+            style={{ padding: 0, background: 'none', border: 'none', display: 'block', width: '100%' }}
+            aria-label="Enlarge image: Concept overview board"
+          >
+            <img
+              className="platform-shot"
+              src={overviewImg}
+              alt="Fictional concept overview board titled One Platform. Every Response. Safer Together, showing all five platform screens: incident dashboard, risk map, agent orchestration, public alert management and medical rescue coordination"
+              loading="lazy"
+            />
+          </button>
+          <figcaption>
+            <strong style={{ color: 'var(--white)' }}>Concept overview board</strong>
+            <br />
+            The five professional platform screens at a glance — incident dashboard, pre-impact
+            risk map, agent orchestration, public alert management and medical &amp; rescue
+            coordination. Fictional concept visualisation; click to enlarge.
+          </figcaption>
+        </figure>
 
         <div className="platform-grid" style={{ marginTop: 'var(--sp-8)' }}>
           {shots.map((shot, i) => (
@@ -93,6 +166,28 @@ export function PlatformShowcase() {
 
         <MiniDashboard />
       </div>
+
+      {overviewOpen && (
+        <div
+          className="lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Concept overview board"
+          onClick={() => setOverviewOpen(false)}
+        >
+          <button className="lightbox-close" aria-label="Close full-screen view" onClick={() => setOverviewOpen(false)}>
+            ×
+          </button>
+          <img
+            src={overviewImg}
+            alt="Fictional concept overview board showing all five professional platform screens"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <p className="lightbox-caption">
+            Concept overview board — fictional concept visualisation. Click anywhere or press Escape to close.
+          </p>
+        </div>
+      )}
 
       {open !== null && (
         <div
