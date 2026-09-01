@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Hero } from './components/Hero'
+import { SignalRail } from './components/SignalRail'
 import { PlatformShowcase } from './components/PlatformShowcase'
 import { AgentNetwork } from './components/AgentNetwork'
 import { CivilianApp } from './components/CivilianApp'
@@ -7,20 +8,33 @@ import { MessageFlow } from './components/MessageFlow'
 import { ScenarioTimeline } from './components/ScenarioTimeline'
 import { PresentationMode } from './components/PresentationMode'
 
-const tabs = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'platform', label: 'Professional Platform' },
-  { id: 'agents', label: 'Agent Network' },
-  { id: 'app', label: 'Civilian App' },
-  { id: 'scenario', label: '15-Minute Scenario' },
+const navItems = [
+  { id: 'platform', label: 'Platform' },
+  { id: 'agents', label: 'Agents' },
+  { id: 'app', label: 'App' },
+  { id: 'scenario', label: '15 minutes' },
 ]
 
 export default function App() {
-  const [active, setActive] = useState('overview')
   const [presenting, setPresenting] = useState(false)
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('shown')
+            observer.unobserve(entry.target)
+          }
+        }
+      },
+      { threshold: 0.08 },
+    )
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   const navigate = (id: string) => {
-    setActive(id)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -30,92 +44,102 @@ export default function App() {
 
   return (
     <>
-      <div className="prototype-banner">
-        STUDENT CONCEPT PROTOTYPE · NOT AN OPERATIONAL EMERGENCY SYSTEM · ALL DATA IS FICTIONAL
-      </div>
+      <SignalRail />
 
       <header className="site-header">
         <div className="container">
-          <span className="brand">
-            <span className="brand-badge" aria-hidden="true">⚓</span>
-            Sogn Emergency Coordination
+          <span className="wordmark">
+            Sogn<em>·</em>EC
           </span>
           <nav className="main-nav" aria-label="Main navigation">
-            {tabs.map((t) => (
-              <button
+            {navItems.map((t) => (
+              <a
                 key={t.id}
-                aria-current={active === t.id}
-                onClick={() => navigate(t.id)}
+                href={`#${t.id}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  navigate(t.id)
+                }}
               >
                 {t.label}
-              </button>
+              </a>
             ))}
           </nav>
-          <button className="presence-btn" onClick={() => setPresenting(true)}>
-            🖥 Presentation Mode
+          <button className="btn-line" style={{ fontSize: 'var(--fs-xs)' }} onClick={() => setPresenting(true)}>
+            Presentation mode ↗
           </button>
         </div>
       </header>
 
       <main>
         <Hero onNavigate={navigate} />
+
+        <section className="section" id="problem" aria-labelledby="problem-title">
+          <div className="container">
+            <div className="problem-grid">
+              <div>
+                <p className="eyebrow">The problem</p>
+                <h2 id="problem-title">A ship that cannot turn, approaching a small harbour</h2>
+                <p className="section-intro">
+                  A large passenger vessel approaching a kai in Inner Sogn may lose manoeuvrability.
+                  In the minutes that follow, sea and land, professionals and civilians, authorities
+                  and volunteers all need the same picture — and rarely have it.
+                </p>
+                <p className="section-intro">
+                  The concept: one professional platform, one civilian app, and a network of agents
+                  that connects them. This site exhibits the prototype concepts for that idea.
+                </p>
+              </div>
+              <div>
+                <p className="eyebrow">Who is involved</p>
+                <ul className="actors-list">
+                  <li>Ship crew</li>
+                  <li>Port / kai</li>
+                  <li>Municipality</li>
+                  <li>Police</li>
+                  <li>Fire and rescue</li>
+                  <li>Paramedics</li>
+                  <li>Hospitals</li>
+                  <li>Rescue helicopters</li>
+                  <li>Maritime rescue</li>
+                  <li>Public authorities</li>
+                  <li>Transport companies</li>
+                  <li>NGOs and volunteers</li>
+                  <li>Tourists and residents</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <PlatformShowcase />
         <AgentNetwork />
         <CivilianApp />
 
-        <section id="connection" aria-labelledby="connection-title">
+        <section className="section" id="flow" aria-labelledby="flow-title">
           <div className="container">
-            <p className="kicker">Platform ↔ App</p>
-            <h2 id="connection-title">How the platform and the app talk through agents</h2>
+            <p className="eyebrow">How it connects</p>
+            <h2 id="flow-title">One round trip through the agents</h2>
             <p className="section-intro">
-              Communication is always bidirectional and always agent-mediated. Follow one complete
-              round trip: a fictional operator command becomes a personal warning — and a citizen's
-              help tap becomes a dispatch decision on the professional dashboard.
+              Communication is bidirectional and always agent-mediated: an operator's command
+              becomes a personal warning — and a citizen's help tap becomes a dispatch decision.
             </p>
-            <div style={{ marginTop: 'var(--sp-8)' }}>
+            <div style={{ marginTop: 'var(--sp-12)' }}>
               <MessageFlow />
             </div>
           </div>
         </section>
 
-        <section id="scenario" aria-labelledby="scenario-title">
+        <section className="section" id="scenario" aria-labelledby="scenario-title">
           <div className="container">
-            <p className="kicker">Fictional demo scenario</p>
-            <h2 id="scenario-title">The 15-minute pre-impact timeline</h2>
+            <p className="eyebrow">The scenario</p>
+            <h2 id="scenario-title">Fifteen minutes, T-15 to T-1</h2>
             <p className="section-intro">
               A large passenger vessel has lost manoeuvrability while approaching Flåm harbour.
-              Estimated collision risk window: 15 minutes. Play the timeline to see how the concept
-              unfolds from ship warning to final pre-impact alert.
+              Play the fictional timeline to see the concept unfold.
             </p>
-            <div style={{ marginTop: 'var(--sp-8)' }}>
+            <div style={{ marginTop: 'var(--sp-12)' }}>
               <ScenarioTimeline />
-            </div>
-          </div>
-        </section>
-
-        <section id="about" aria-labelledby="about-title">
-          <div className="container">
-            <p className="kicker">Design thinking / prototype status</p>
-            <h2 id="about-title">What this is — and what it is not</h2>
-            <div className="grid-2" style={{ marginTop: 'var(--sp-6)' }}>
-              <div className="card">
-                <h3>This prototype</h3>
-                <ul style={{ color: 'var(--slate-300)' }}>
-                  <li>Communicates an innovation concept for a student project (INN524, HVL)</li>
-                  <li>Uses one consistent fictional scenario: Flåm / Inner Sogn</li>
-                  <li>Shows how agents could personalise pre-approved information</li>
-                  <li>Is meant to be tested and discussed with classmates and stakeholders</li>
-                </ul>
-              </div>
-              <div className="card">
-                <h3>This is not</h3>
-                <ul style={{ color: 'var(--slate-300)' }}>
-                  <li>An operational emergency system</li>
-                  <li>Connected to any real authority, hospital, port or rescue service</li>
-                  <li>Capable of real alerts, real geofencing or real emergency calls</li>
-                  <li>Using any real personal or location data</li>
-                </ul>
-              </div>
             </div>
           </div>
         </section>
@@ -123,13 +147,14 @@ export default function App() {
 
       <footer className="site-footer">
         <div className="container">
+          <p className="foot-brand">Sogn Emergency Coordination</p>
           <p>
-            <strong>Disclaimer:</strong> Sogn Emergency Coordination is a fictional student concept
-            prototype created for the INN524 innovation course at HVL (Western Norway University of
-            Applied Sciences). All zones, events, response plans, agent statuses and statistics on
-            this site are invented for demonstration purposes. This website is not an emergency
-            service and is not affiliated with any authority. In a real emergency, always call the
-            official emergency number in your country.
+            <strong>Disclaimer.</strong> A fictional student concept prototype created for the
+            INN524 innovation course at HVL (Western Norway University of Applied Sciences). All
+            zones, events, response plans, agent statuses and statistics are invented for
+            demonstration. This website is not an emergency service and is not affiliated with any
+            authority. In a real emergency, always call the official emergency number in your
+            country.
           </p>
         </div>
       </footer>

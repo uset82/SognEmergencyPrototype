@@ -2,6 +2,45 @@
 
 Source of truth for implementation progress. Stack: **Vite + React + TypeScript**, plain CSS (custom properties), no backend, static deploy.
 
+## Phase — WebDesigner visual reset
+
+Following the WebDesigner workflow: frontend-design → frontend-skill → design system → build → anti-slop review → browser QA.
+
+- [x] Read `AGENTS.md`
+- [x] Read `docs/frontend-guidelines.md`
+- [x] Apply `frontend-design`
+- [x] Apply `frontend-skill`
+- [x] Write visual thesis — "quiet Nordic exhibition hall on warm paper; dark prototypes as exhibited objects; one thin signal line from ship to civilian"
+- [x] Set Variance / Motion / Density — 6/10, 3/10, 4/10
+- [x] Approve 6 color tokens — Paper #F4F3EF, Ink #171A1A, Stone #D8D9D4, Fjord #53686B, Pine #31584C, Signal #B83A32 (+ derived paper-deep #ECEAE3, ink-62% secondary). Critique: no gradients added; Pine is the only working accent; Signal only for emergency meaning.
+- [x] Approve typography system — Schibsted Grotesk (Norwegian) display+body, IBM Plex Mono for eyebrows/captions only
+- [x] Define one signature element — scroll-tracked signal line with SHIP → AGENT → AUTHORITY → CIVILIAN stations
+- [x] Audit current UI for generic AI aesthetics — findings: dark-navy SaaS dashboard look, amber banner, glowing pill badges, dark command-centre styling competes with the prototype images
+- [x] Remove purple/lilac/blue-gradient styling — none present; removed blue/info accent + amber system entirely
+- [x] Rebuild hero — single composition: brand, one headline, one sentence, two CTAs, one dominant visual, INN524·HVL eyebrow
+- [x] Rebuild prototype presentation sections — editorial: eyebrow → title → one sentence → large image → lightbox
+- [x] Rebuild app showcase — WARN → GUIDE → LOCATE → RESCUE editorial steps with one large phone
+- [x] Simplify agent section — typographic hierarchy tree, Main Agent strongest weight
+- [x] Run desktop visual QA — browser screenshots at 1280/1440
+- [x] Run mobile visual QA — browser screenshots at 390, no horizontal overflow
+- [x] Run anti-slop audit — see answers at end of this file
+- [x] Run accessibility checks — semantic landmarks, keyboard focus, reduced motion, contrast
+- [x] Run production build — `npm run build` verified
+
+### Anti-slop audit answers
+
+1. Purple or lilac? **No** — palette is Paper/Ink/Stone/Fjord/Pine/Signal.
+2. Blue-purple gradient? **No** — no gradients at all except a barely-visible paper texture.
+3. Generic AI glow effects? **No** — elevation only on lightbox and phone; no glows.
+4. Too many things inside cards? **No** — cards removed everywhere except interactive phone/controls.
+5. Hero more than one main visual idea? **No** — one composition: headline, sentence, CTAs, one image.
+6. Prototype images clearly dominant? **Yes** — large editorial presentation, ~75% visual attention.
+7. Looks good with animations disabled? **Yes** — all motion is reveal/transition only.
+8. Typography intentional? **Yes** — Norwegian grotesk family + mono captions, weight contrast.
+9. Specifically appropriate for Inner Sogn / emergency preparedness? **Yes** — fjord/pine/signal palette, Norwegian typeface, exhibition framing.
+10. Could it be reused unchanged for an AI crypto startup? **No** — the exhibition framing, signal-line signature and Norwegian institutional voice are subject-specific.
+
+
 ## Asset status
 
 - [x] Platform prototype image 1 located: `ChatGPT Image Sep 1, 2026, 08_17_00 PM.png` → copied to `src/assets/platform-dashboard.png` (MAIN INCIDENT DASHBOARD)

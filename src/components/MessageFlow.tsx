@@ -28,28 +28,21 @@ export function MessageFlow() {
     <div>
       <div className="flow" aria-live="polite">
         {flowSteps.map((s, i) => (
-          <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className={`flow-step side-${s.side} ${i <= step ? 'active' : ''}`}>
-              <div className="who">{s.label}</div>
-              <p className="msg">{s.text}</p>
-            </div>
-            {i < flowSteps.length - 1 && (
-              <div className="flow-arrow" aria-hidden="true">
-                ↓
-              </div>
-            )}
+          <div key={i} className={`flow-step side-${s.side} ${i <= step ? 'active' : ''}`}>
+            <div className="who">{s.label}</div>
+            <p className="msg">{s.text}</p>
           </div>
         ))}
       </div>
       <div className="flow-controls">
-        <button className="btn btn-primary btn-small" onClick={play}>
-          ▶ Play round trip
+        <button className="btn-line" onClick={play}>
+          ▶ Play the round trip
         </button>
-        <button className="btn btn-secondary btn-small" onClick={() => setPlaying(false)}>
+        <button className="btn-line" onClick={() => setPlaying(false)}>
           ⏸ Pause
         </button>
         <button
-          className="btn btn-secondary btn-small"
+          className="btn-line"
           onClick={() => {
             setPlaying(false)
             setStep(0)
@@ -57,7 +50,9 @@ export function MessageFlow() {
         >
           ↺ Reset
         </button>
-        <span className="pill pill-info">Step {step + 1} / {flowSteps.length}</span>
+        <span className="flow-step-note">
+          step {step + 1} / {flowSteps.length}
+        </span>
       </div>
     </div>
   )

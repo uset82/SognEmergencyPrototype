@@ -1,128 +1,83 @@
 import { useState } from 'react'
 import { agents } from '../data/agents'
-import type { Agent } from '../data/agents'
 
-const shipRow: string[] = ['ship']
-const orchestratorRow: string[] = ['main']
-const secondRow: string[] = ['risk', 'response', 'public']
-const citizenRow: string[] = ['citizen']
-const responderRow = ['port', 'police', 'fire', 'medical', 'paramedic', 'hospital', 'helicopter']
-const supportRow = ['maritime', 'municipality', 'resource', 'translation', 'audit']
+const byId = (id: string) => agents.find((a) => a.id === id)!
 
-const byId = (id: string): Agent => agents.find((a) => a.id === id)!
-
-function Node({
-  id,
-  selected,
-  onSelect,
-}: {
+interface Tier {
   id: string
-  selected: string | null
-  onSelect: (id: string) => void
-}) {
-  const agent = byId(id)
-  const isMain = id === 'main'
-  return (
-    <button
-      className={
-        'agent-node' +
-        (isMain ? ' node-main' : '') +
-        (id === 'medical' || id === 'ship' ? ' node-critical' : '')
-      }
-      aria-pressed={selected === id}
-      onClick={() => onSelect(id)}
-    >
-      {agent.name}
-    </button>
-  )
+  role: string
+  desc: string
+  status: string
+  main?: boolean
 }
 
-function Connector() {
-  return <div className="connector" aria-hidden="true" />
-}
+const tiers: Tier[] = [
+  { id: 'ship', role: 'Ship Agent', desc: 'The vessel\'s structured digital voice — turns a radio call into incident data.', status: 'loss of control reported' },
+  { id: 'main', role: 'Main Agent / Orchestrator', desc: 'Matches the incident to a pre-approved playbook and coordinates every other agent.', status: 'Flåm scenario F-03 active', main: true },
+  { id: 'risk', role: 'Risk Agent', desc: 'Loads pre-approved impact, danger and warning zones.', status: '2,843 people in area' },
+  { id: 'response', role: 'Response Agent', desc: 'Notifies and coordinates the fictional emergency network.', status: 'all responders acknowledged' },
+  { id: 'public', role: 'Public Agent', desc: 'Prepares pre-approved alerts — never invents warning text.', status: 'alert prepared, 12 languages' },
+  { id: 'citizen', role: 'Citizen Agent', desc: 'One per person: personalises guidance and relays help requests.', status: '1,042 citizens guided' },
+  { id: 'port', role: 'Port / Kai Agent', desc: 'Harbour-side eyes: quay status, traffic, mooring.', status: 'harbour closed' },
+  { id: 'police', role: 'Police Agent', desc: 'Cordons, traffic, evacuation support.', status: '48 units on scene' },
+  { id: 'fire', role: 'Fire Agent', desc: 'Fire and rescue coordination.', status: 'rescue teams staged' },
+  { id: 'medical', role: 'Medical Agent', desc: 'Receives and triages simulated help requests.', status: '27 requests received' },
+  { id: 'paramedic', role: 'Paramedic Agent', desc: 'Ambulance and paramedic coordination.', status: '76 paramedics on scene' },
+  { id: 'hospital', role: 'Hospital Agent', desc: 'Simulated receiving capacity per facility.', status: '3 hospitals on standby' },
+  { id: 'helicopter', role: 'Helicopter Agent', desc: 'Rescue helicopter availability and landing sites.', status: '2 helicopters ready' },
+  { id: 'maritime', role: 'Maritime Rescue Agent', desc: 'Sea-rescue coordination around the vessel.', status: 'boats monitoring approach' },
+  { id: 'municipality', role: 'Municipality Agent', desc: 'Shelters, schools, reception centres.', status: 'Flåm School open' },
+  { id: 'resource', role: 'Resource Agent', desc: 'Buses, ferries, NGOs, hotels, volunteers.', status: '5 buses + 2 ferries assigned' },
+  { id: 'translation', role: 'Translation Agent', desc: 'Approved alerts in every citizen\'s language.', status: '12 languages ready' },
+  { id: 'audit', role: 'Audit Agent', desc: 'Logs every agent decision for later review.', status: 'all actions logged' },
+]
 
 export function AgentNetwork() {
-  const [selected, setSelected] = useState<string | null>('main')
-  const agent = selected ? byId(selected) : null
+  const [selected, setSelected] = useState<string | null>(null)
+  const detail = selected ? byId(selected) : null
 
   return (
-    <section id="agents" aria-labelledby="agents-title">
+    <section className="section" id="agents" aria-labelledby="agents-title">
       <div className="container">
-        <p className="kicker">Agent network</p>
-        <h2 id="agents-title">Agents connect the entire ecosystem</h2>
+        <p className="eyebrow">Exhibition 02 · The agent system</p>
+        <h2 id="agents-title">Agents connect the ecosystem</h2>
         <p className="section-intro">
-          The professional platform and the civilian app are human interfaces. Underneath, a network
-          of specialised agents is coordinated by one Main Agent / Orchestrator. Select any agent to
-          see its fictional role, inputs, outputs and an example message.
+          The platform and the app are human interfaces. Underneath, specialised agents pass
+          structured information — always coordinated by one Main Agent, never inventing policy.
+          Select a row for its fictional detail.
         </p>
 
-        <div className="agent-layout" style={{ marginTop: 'var(--sp-8)' }}>
-          <div className="agent-map" role="group" aria-label="Agent architecture map">
-            <div className="agent-row">
-              <span className="pill pill-info">👤 Human / Captain</span>
+        <div className="agent-tree">
+          {tiers.map((t) => (
+            <div key={t.id}>
+              <button
+                className={`agent-tier is-button ${t.main ? 'tier-main' : ''} ${selected === t.id ? 'selected' : ''}`}
+                onClick={() => setSelected(selected === t.id ? null : t.id)}
+                aria-expanded={selected === t.id}
+              >
+                <span className="tier-role">{t.role}</span>
+                <span className="tier-desc">{t.desc}</span>
+                <span className="tier-status">{t.status}</span>
+              </button>
+              {selected === t.id && detail && (
+                <div className="agent-detail-line">
+                  <div>
+                    <p className="eyebrow">Input</p>
+                    <p>{detail.input}</p>
+                    <p className="eyebrow">Output</p>
+                    <p>{detail.output}</p>
+                  </div>
+                  <p className="msg">{detail.exampleMessage}</p>
+                </div>
+              )}
             </div>
-            <Connector />
-            <div className="agent-row">
-              {shipRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-            <Connector />
-            <div className="agent-row">
-              {orchestratorRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-            <Connector />
-            <div className="agent-row">
-              {secondRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-            <Connector />
-            <div className="agent-row">
-              {citizenRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-            <Connector />
-            <div className="agent-row" aria-label="Response branch agents">
-              {responderRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-            <div className="agent-row" aria-label="Support agents" style={{ marginTop: 'var(--sp-2)' }}>
-              {supportRow.map((id) => (
-                <Node key={id} id={id} selected={selected} onSelect={setSelected} />
-              ))}
-            </div>
-          </div>
-
-          <div className="agent-detail card" aria-live="polite">
-            {agent && (
-              <>
-                <h3>{agent.name}</h3>
-                <p style={{ color: 'var(--slate-300)' }}>{agent.role}</p>
-                <dl>
-                  <dt>Input</dt>
-                  <dd>{agent.input}</dd>
-                  <dt>Output</dt>
-                  <dd>{agent.output}</dd>
-                  <dt>Status</dt>
-                  <dd>
-                    <span className="pill pill-safe">{agent.status}</span>
-                  </dd>
-                  <dt className="sr-only">Example message</dt>
-                  <dd className="example">{agent.exampleMessage}</dd>
-                </dl>
-                <p className="agent-note">
-                  Fictional status for the demo scenario only. This prototype does not imply any
-                  real integration with police, fire, medical services or other authorities.
-                </p>
-              </>
-            )}
-          </div>
+          ))}
         </div>
+
+        <p className="section-intro" style={{ marginTop: 'var(--sp-8)', fontSize: 'var(--fs-sm)' }}>
+          All statuses are fictional, for the demo scenario only. This prototype does not imply any
+          real integration with police, fire, medical services or other authorities.
+        </p>
       </div>
     </section>
   )

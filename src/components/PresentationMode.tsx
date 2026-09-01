@@ -94,8 +94,8 @@ export function PresentationMode({ onExit }: { onExit: () => void }) {
 
   return (
     <div className="presentation" role="dialog" aria-modal="true" aria-label="Presentation mode">
-      <div className="prototype-banner">
-        STUDENT CONCEPT PROTOTYPE — INN524 · All data is fictional · Not an operational emergency system
+      <div className="proto-note">
+        Student concept prototype — INN524 · All data is fictional · Not an operational emergency system
       </div>
       <div className="presentation-slide">
         <p className="kicker">Sogn Emergency Coordination</p>
@@ -104,7 +104,7 @@ export function PresentationMode({ onExit }: { onExit: () => void }) {
       </div>
       <div className="presentation-controls">
         <button
-          className="btn btn-secondary btn-small"
+          className="btn-line"
           onClick={() => setIndex((i) => Math.max(i - 1, 0))}
           disabled={index === 0}
         >
@@ -114,13 +114,13 @@ export function PresentationMode({ onExit }: { onExit: () => void }) {
           {index + 1} / {slides.length}
         </span>
         <button
-          className="btn btn-primary btn-small"
+          className="btn-line"
           onClick={() => setIndex((i) => Math.min(i + 1, slides.length - 1))}
           disabled={index === slides.length - 1}
         >
           Next →
         </button>
-        <button className="btn btn-secondary btn-small" onClick={onExit}>
+        <button className="btn-line" onClick={onExit}>
           Exit Presentation
         </button>
       </div>

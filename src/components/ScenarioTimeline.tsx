@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { timeline } from '../data/scenario'
 
 export function ScenarioTimeline() {
-  const [stage, setStage] = useState(-1) // -1 = not started
+  const [stage, setStage] = useState(-1)
   const [playing, setPlaying] = useState(false)
 
   useEffect(() => {
@@ -30,41 +30,38 @@ export function ScenarioTimeline() {
 
   return (
     <div>
-      <div className="scenario-controls" style={{ alignItems: 'center' }}>
-        <div className="scenario-countdown" aria-live="off">
-          {finished ? 'T-0' : currentT}
-        </div>
-        <div>
-          <strong style={{ color: 'var(--white)' }}>Simulated pre-impact clock</strong>
-          <p style={{ margin: 0, fontSize: 'var(--fs-sm)', color: 'var(--slate-400)' }}>
-            Fictional demo clock — accelerated and not tied to any real system.
-          </p>
-        </div>
+      <div className="scenario-head">
+        <span className={`scenario-countdown ${started ? '' : 'idle'}`}>{finished ? 'T-0' : currentT}</span>
+        <p className="section-intro" style={{ margin: 0, fontSize: 'var(--fs-sm)', maxWidth: '40ch' }}>
+          Simulated pre-impact clock — accelerated and not tied to any real system.
+        </p>
         <span style={{ flex: 1 }} />
-        <button
-          className="btn btn-primary btn-small"
-          onClick={() => {
-            if (finished || stage < 0) setStage(0)
-            setPlaying(true)
-          }}
-        >
-          ▶ Play scenario
-        </button>
-        <button className="btn btn-secondary btn-small" onClick={() => setPlaying(false)}>
-          ⏸ Pause
-        </button>
-        <button className="btn btn-secondary btn-small" onClick={reset}>
-          ↺ Reset
-        </button>
+        <div className="flow-controls" style={{ margin: 0 }}>
+          <button
+            className="btn-line"
+            onClick={() => {
+              if (finished || stage < 0) setStage(0)
+              setPlaying(true)
+            }}
+          >
+            ▶ Play
+          </button>
+          <button className="btn-line" onClick={() => setPlaying(false)}>
+            ⏸ Pause
+          </button>
+          <button className="btn-line" onClick={reset}>
+            ↺ Reset
+          </button>
+        </div>
       </div>
 
-      <ol className="timeline" style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+      <ol className="timeline">
         {timeline.map((s, i) => (
           <li key={s.t} className={`timeline-stage ${started && i <= stage ? 'active' : ''}`}>
-            <div className="t">{s.t}</div>
-            <div className="card">
+            <span className="t">{s.t}</span>
+            <div>
               <h3>{s.title}</h3>
-              <p style={{ margin: 0, color: 'var(--slate-300)' }}>{s.description}</p>
+              <p className="stage-desc">{s.description}</p>
               <div className="actors">
                 {s.actors.map((a) => (
                   <span key={a}>{a}</span>
@@ -74,11 +71,6 @@ export function ScenarioTimeline() {
           </li>
         ))}
       </ol>
-
-      <p className="agent-note" style={{ marginTop: 'var(--sp-6)' }}>
-        This is only a fictional concept scenario for the INN524 student project. It demonstrates
-        the full innovation concept in under three minutes and can always be reset.
-      </p>
     </div>
   )
 }
