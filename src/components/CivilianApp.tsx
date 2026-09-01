@@ -1,204 +1,171 @@
-import { useState } from 'react'
-import { helpOptions } from '../data/civilian'
-import type { ScreenId } from '../data/civilian'
+import { useEffect, useState } from 'react'
+import readyImg from '../assets/app-ready.png'
+import alertImg from '../assets/app-alert.png'
+import findSafetyImg from '../assets/app-find-safety.png'
 
-const steps = [
+const screens = [
   {
-    word: 'Warn',
-    text: 'A civilian receives an immediate emergency alert — clear danger level, simple language, loud-alarm concept.',
-    screen: 'alert' as ScreenId,
+    no: '01',
+    word: 'Ready',
+    title: 'Prepared before something happens',
+    expl: 'SOGN SAFE normally stays quiet. Residents and visitors can see nearby safe places, keep essential emergency information available offline and choose their preferred language.',
+    src: readyImg,
+    alt: 'SOGN SAFE app in its normal state: SAFE status, nearby safe places on an approximate local map, emergency readiness, offline information, language setting and downloaded emergency information',
   },
   {
-    word: 'Guide',
-    text: 'The app identifies the nearest approved safe area, the distance, and the walking time.',
-    screen: 'route' as ScreenId,
+    no: '02',
+    word: 'Alert',
+    title: 'Understand the danger immediately',
+    expl: 'If the user is inside the affected area, the app reduces the emergency to one clear message and two actions: move toward safety or request help.',
+    src: alertImg,
+    alt: 'SOGN SAFE emergency alert: possible vessel collision near Flåm harbor, you are inside the affected area, about 15 minutes, with GO TO SAFETY and I NEED HELP as the two dominant actions',
+    flip: true,
   },
   {
-    word: 'Locate',
-    text: 'An injured or trapped person can conceptually send their position with one tap.',
-    screen: 'location' as ScreenId,
-  },
-  {
-    word: 'Rescue',
-    text: 'Responders receive the simulated help request on the shared picture — and the person can confirm they are safe.',
-    screen: 'safe' as ScreenId,
+    no: '03',
+    word: 'Find safety',
+    title: 'Turn official information into personal guidance',
+    expl: 'The app identifies a confirmed safe location and shows only what matters to the civilian: where they are, what area to avoid and where they should go.',
+    src: findSafetyImg,
+    alt: 'SOGN SAFE nearest safe area screen: Flåm School, 650 m, 8 min walk, open and confirmed, with an approximate map showing the affected area, blocked waterfront, Safe Zone B and C, and START SAFE ROUTE',
   },
 ]
 
-function PhoneScreen({ screen, onNavigate }: { screen: ScreenId; onNavigate: (s: ScreenId) => void }) {
-  switch (screen) {
-    case 'alert':
-      return (
-        <>
-          <div className="app-alert">
-            <h3>Emergency alert</h3>
-            <p>Possible vessel collision near Flåm harbour.</p>
-          </div>
-          <p className="app-screen-title">You are inside the affected area</p>
-          <button className="app-btn app-btn-primary" onClick={() => onNavigate('route')}>
-            Go to safety
-          </button>
-          <button className="app-btn app-btn-secondary" onClick={() => onNavigate('help')}>
-            I need help
-          </button>
-          <p className="app-footer">Loud alarm + vibration concept · simulated alert, 14:45</p>
-        </>
-      )
-    case 'route':
-      return (
-        <>
-          <h3 className="app-screen-title">You → safe area</h3>
-          <div className="app-map" role="img" aria-label="Simplified fictional map showing you, a danger zone and a safe route to Flåm School">
-            <div className="road" style={{ left: 0, right: 0, top: 84, height: 6 }} />
-            <div className="road" style={{ top: 0, bottom: 0, left: 200, width: 6 }} />
-            <div className="danger" />
-            <div className="route" style={{ left: 66, top: 110, width: 190, transform: 'rotate(-38deg)' }} />
-            <div className="you" style={{ left: 60, top: 108 }} />
-            <div className="safe-point" style={{ left: 240, top: 24 }} />
-            <span className="map-label" style={{ left: 32, top: 126 }}>YOU</span>
-            <span className="map-label" style={{ left: 186, top: 6 }}>FLÅM SCHOOL</span>
-            <span className="map-label" style={{ left: 18, top: 158 }}>DANGER — AVOID</span>
-          </div>
-          <p className="app-meta">
-            Nearest safe area: <strong>Flåm School</strong>
-            <br />
-            Distance: <strong>650 m</strong> · Walking: <strong>8 min</strong>
-          </p>
-          <button className="app-btn" onClick={() => onNavigate('safe')}>
-            Start safe route
-          </button>
-          <p className="app-footer">Route from the pre-approved evacuation plan (fictional)</p>
-        </>
-      )
-    case 'help':
-      return (
-        <>
-          <h3 className="app-screen-title">I need help</h3>
-          <p className="app-meta">Choose one — large buttons, minimal reading.</p>
-          {helpOptions.map((o) => (
-            <button key={o.id} className="app-btn app-btn-primary" onClick={() => onNavigate('location')}>
-              {o.label}
-            </button>
-          ))}
-          <button className="app-btn app-btn-secondary" onClick={() => onNavigate('alert')}>
-            Back
-          </button>
-        </>
-      )
-    case 'location':
-      return (
-        <>
-          <h3 className="app-screen-title">Send your location?</h3>
-          <p className="app-meta">
-            Your <strong>simulated</strong> location would be shared with the fictional coordination
-            system. No real data is transmitted.
-          </p>
-          <div className="app-map" role="img" aria-label="Fictional map showing your simulated position">
-            <div className="you" style={{ left: 140, top: 76 }} />
-            <span className="map-label" style={{ left: 106, top: 96 }}>SIMULATED POSITION</span>
-          </div>
-          <button className="app-btn app-btn-primary" onClick={() => onNavigate('offline')}>
-            Send help signal
-          </button>
-          <button className="app-btn app-btn-secondary" onClick={() => onNavigate('help')}>
-            Cancel
-          </button>
-          <p className="app-footer">This prototype never places real emergency calls</p>
-        </>
-      )
-    case 'safe':
-      return (
-        <>
-          <div className="app-alert" style={{ background: 'var(--pine)' }}>
-            <h3>You are outside the danger area</h3>
-            <p>Follow instructions from on-site personnel.</p>
-          </div>
-          <p className="app-meta">
-            Latest update: <strong>14:48</strong>
-          </p>
-          <button className="app-btn app-btn-safe" onClick={() => onNavigate('route')}>
-            I am safe — confirm
-          </button>
-          <button className="app-btn app-btn-secondary" onClick={() => onNavigate('help')}>
-            I need help
-          </button>
-          <p className="app-footer">Your confirmation updates the shared picture (simulated)</p>
-        </>
-      )
-    case 'offline':
-      return (
-        <>
-          <div className="app-alert" style={{ background: 'var(--fjord)' }}>
-            <h3>Connection limited</h3>
-            <p>Last verified update: 14:47.</p>
-          </div>
-          <p className="app-meta" style={{ textAlign: 'left' }}>
-            Follow your last confirmed evacuation route unless instructed otherwise. Help signals
-            are queued and sent automatically when connectivity returns.
-          </p>
-          <button className="app-btn app-btn-secondary" onClick={() => onNavigate('alert')}>
-            Back to alert
-          </button>
-          <p className="app-footer">Offline-tolerant design concept · simulated state</p>
-        </>
-      )
-  }
-}
+const chain = [
+  'Professional platform',
+  'Public Agent',
+  'Citizen Agent',
+  'SOGN SAFE',
+  'Civilian',
+]
 
 export function CivilianApp() {
-  const [screen, setScreen] = useState<ScreenId>('alert')
+  const [open, setOpen] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (open === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
   return (
     <section className="section" id="app" aria-labelledby="app-title">
       <div className="container">
-        <p className="eyebrow">Exhibition 03 · Civilian app</p>
-        <h2 id="app-title">Four answers, nothing else</h2>
+        <p className="eyebrow">Exhibition 03 · Civilian app — SOGN SAFE</p>
+        <h2 id="app-title">Simple for the civilian, robust underneath</h2>
         <p className="section-intro">
-          The civilian app is for residents, tourists, workers and passengers. Under stress it must
-          be extremely simple — so the whole concept fits in four words.
+          The civilian app is for ordinary people: residents, tourists, students, workers, families
+          — anyone, including someone unfamiliar with the area or the language. They should never
+          need to understand the professional emergency system. The prototype follows one journey:
+        </p>
+        <p className="section-intro" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-sm)', letterSpacing: '0.08em' }}>
+          READY → ALERT → FIND SAFETY → EVACUATE
         </p>
 
-        <div className="app-section-grid">
-          <div className="app-steps">
-            {steps.map((s) => (
+        {screens.map((s) => (
+          <figure className={`journey-step reveal ${s.flip ? 'flip' : ''}`} key={s.no}>
+            <div>
+              <div className="step-head">
+                <span className="step-no">{s.no} /</span>
+                <h3>{s.word}</h3>
+              </div>
+              <p className="step-title">{s.title}</p>
+              <p className="step-expl">{s.expl}</p>
+            </div>
+            <div className="journey-media">
               <button
-                key={s.word}
-                className="app-step"
-                style={{ background: 'none', border: 'none', borderBottom: '1px solid var(--stone)', textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%', padding: 0 }}
-                onClick={() => setScreen(s.screen)}
-                aria-label={`Show the ${s.word} screen on the phone`}
+                className="prototype-frame"
+                onClick={() => setOpen(screens.indexOf(s))}
+                aria-label={`Enlarge: Screen ${s.no} — ${s.word}`}
               >
-                <span className="step-word">{s.word}</span>
-                <p>{s.text}</p>
+                <img src={s.src} alt={s.alt} loading="lazy" />
               </button>
-            ))}
-            <p className="section-intro" style={{ marginTop: 'var(--sp-8)', fontSize: 'var(--fs-sm)' }}>
-              Try it: each step drives the phone. The app also handles degraded connectivity with
-              queued help signals, and every screen is a simulation — no real location or calls.
+            </div>
+          </figure>
+        ))}
+
+        {/* Future screens — deliberately not invented */}
+        <div className="journey-step reveal">
+          <div>
+            <div className="step-head">
+              <span className="step-no">04 /</span>
+              <h3>Evacuate</h3>
+            </div>
+            <p className="step-title">One instruction at a time</p>
+            <p className="step-expl">
+              During evacuation, navigation becomes intentionally simple: the next movement, the
+              safe destination and the danger area to avoid — with help available throughout.
+            </p>
+            <p className="step-expl" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xs)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              Prototype image pending — next iteration
             </p>
           </div>
-
-          <div>
-            <div className="screen-tabs" role="group" aria-label="Choose app screen">
-              {(['alert', 'route', 'help', 'location', 'safe', 'offline'] as ScreenId[]).map((id) => (
-                <button key={id} aria-pressed={screen === id} onClick={() => setScreen(id)}>
-                  {id}
-                </button>
-              ))}
-            </div>
-            <div className="phone">
-              <div className="phone-screen">
-                <div className="phone-statusbar">
-                  <span>14:45</span>
-                  <span>SOGN SAFE — SIMULATED</span>
-                  <span>▮▮▮</span>
-                </div>
-                <PhoneScreen screen={screen} onNavigate={setScreen} />
-              </div>
+          <div className="journey-media">
+            <div className="placeholder-frame">
+              <span className="ph-label">Future prototype screen</span>
+              <span className="ph-word">Evacuate</span>
+              <span className="ph-label">Not built yet — no image invented</span>
             </div>
           </div>
         </div>
+
+        <div className="concept-statement reveal">
+          <p className="statement">Professional complexity becomes civilian simplicity.</p>
+          <p className="section-intro" style={{ marginBottom: 'var(--sp-6)' }}>
+            The professional platform may coordinate ships, police, hospitals, paramedics,
+            helicopters, municipalities and specialised agents. The civilian should not see that
+            complexity — SOGN SAFE translates the official incident state into personal actions.
+          </p>
+          <p className="flow-words">
+            <span className="hot">WARN</span> <span className="dim">→</span>{' '}
+            <span className="hot">GUIDE</span>{' '}
+            <span className="next">→ LOCATE → RESCUE</span>
+            <span className="dim"> · </span>
+            <span className="next">LOCATE / RESCUE screens arrive with the next prototype iteration</span>
+          </p>
+        </div>
+
+        <div className="reveal">
+          <p className="eyebrow">Where the information comes from</p>
+          <div className="agent-chain" aria-label="Information path from professional platform to civilian">
+            {chain.map((node, i) => (
+              <div key={node} style={{ display: 'contents' }}>
+                <span className={`chain-node ${i === chain.length - 1 ? 'end' : ''}`}>{node}</span>
+                {i < chain.length - 1 && (
+                  <span className="chain-arrow" aria-hidden="true">▼</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="section-intro" style={{ marginTop: 'var(--sp-8)', fontSize: 'var(--fs-sm)' }}>
+            The civilian never talks to the professional platform directly — agents translate the
+            official incident state into one personal instruction at a time. All screens shown are
+            fictional prototype concepts; the app transmits no real data.
+          </p>
+        </div>
       </div>
+
+      {open !== null && (
+        <div
+          className="lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Screen ${screens[open].no} — ${screens[open].word}`}
+          onClick={() => setOpen(null)}
+        >
+          <button className="lightbox-close" aria-label="Close full-screen view" onClick={() => setOpen(null)}>
+            ×
+          </button>
+          <img src={screens[open].src} alt={screens[open].alt} onClick={(e) => e.stopPropagation()} />
+          <p className="lightbox-caption">
+            SOGN SAFE — screen {screens[open].no} ({screens[open].word}) · fictional prototype ·
+            click anywhere or press Escape to close
+          </p>
+        </div>
+      )}
     </section>
   )
 }

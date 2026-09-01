@@ -408,6 +408,142 @@ figure { margin: 0; }
 
 .lightbox-close:hover { border-color: var(--paper); }
 
+/* ---------- Civilian app journey (image-led editorial) ---------- */
+.journey-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-16);
+  align-items: center;
+  margin: var(--sp-16) 0;
+}
+
+.journey-step.flip .journey-media { order: -1; }
+
+.journey-step .journey-media {
+  max-width: 440px;
+  width: 100%;
+  justify-self: center;
+}
+
+.journey-step .step-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.journey-step .step-no {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--signal);
+}
+
+.journey-step h3 {
+  font-size: var(--fs-xl);
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.journey-step .step-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin: 0 0 var(--sp-3);
+}
+
+.journey-step .step-expl {
+  color: var(--ink-62);
+  max-width: 46ch;
+}
+
+/* Future screens — clearly not real prototypes */
+.placeholder-frame {
+  border: 1px dashed var(--fjord);
+  background: var(--paper-deep);
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  text-align: center;
+  padding: var(--sp-6);
+}
+
+.placeholder-frame .ph-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fjord);
+}
+
+.placeholder-frame .ph-word {
+  font-size: var(--fs-2xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--ink-62);
+  letter-spacing: -0.02em;
+}
+
+/* Concept statement */
+.concept-statement {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--stone);
+  padding: var(--sp-12) 0;
+  margin: var(--sp-16) 0;
+}
+
+.concept-statement .statement {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  max-width: 24ch;
+  margin-bottom: var(--sp-6);
+}
+
+.concept-statement .flow-words {
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.concept-statement .flow-words .dim { color: var(--stone); }
+.concept-statement .flow-words .hot { color: var(--pine); font-weight: 500; }
+.concept-statement .flow-words .next { color: var(--fjord); }
+
+/* Agent chain (restrained, typographic) */
+.agent-chain {
+  margin-top: var(--sp-16);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 26rem;
+}
+
+.agent-chain .chain-node {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-62);
+  padding: var(--sp-2) 0;
+}
+
+.agent-chain .chain-node.end {
+  color: var(--pine);
+  font-weight: 500;
+}
+
+.agent-chain .chain-arrow {
+  color: var(--stone);
+  font-family: var(--font-mono);
+  line-height: 1;
+  padding: 0 0 var(--sp-2) 0.5px;
+}
+
 /* ---------- Agent system (typographic hierarchy) ---------- */
 .agent-tree {
   margin: var(--sp-12) 0 0;
@@ -963,6 +1099,8 @@ figure { margin: 0; }
   .section { padding: var(--sp-16) 0; }
   .concept-head, .problem-grid, .app-section-grid, .agent-detail-line { grid-template-columns: 1fr; }
   .concept-head { gap: var(--sp-3); }
+  .journey-step { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .journey-step.flip .journey-media { order: 0; }
   .phone { position: static; margin-top: var(--sp-8); }
 }
 
