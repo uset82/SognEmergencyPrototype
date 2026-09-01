@@ -1,0 +1,9 @@
+node_modules/
+dist/
+tsconfig.tsbuildinfo
+
+# 97 MB demo video — too large for normal git; use Git LFS if it must be versioned
+Video Project 25.mp4
+
+# WebDesigner local engine runtime (copied from ~/.webdesigner)
+.antigravity/
