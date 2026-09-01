@@ -2,7 +2,26 @@
 
 Source of truth for implementation progress. Stack: **Vite + React + TypeScript**, plain CSS (custom properties), no backend, static deploy.
 
-## Phase — WebDesigner visual reset
+## Phase — Civilian app prototype showcase (image-led)
+
+Source images inspected visually in `APPprototype/` (3 of the 4 journey screens exist; EVACUATE and LOCATE/RESCUE do not — no images invented, labelled placeholders added instead). Source files untouched.
+
+### Asset mapping
+
+- `APPprototype/ChatGPT Image Sep 1, 2026, 09_01_14 PM.png` → `src/assets/app-ready.png` — SCREEN 01 READY (SAFE state, safe places, offline info, language)
+- `APPprototype/ChatGPT Image Sep 1, 2026, 09_02_37 PM.png` → `src/assets/app-alert.png` — SCREEN 02 ALERT (affected area, ~15 minutes, GO TO SAFETY / I NEED HELP)
+- `APPprototype/ChatGPT Image Sep 1, 2026, 09_03_48 PM.png` → `src/assets/app-find-safety.png` — SCREEN 03 FIND SAFETY (Flåm School, 650 m, 8 min, route map)
+
+- [x] Inspect directory and visually analyse all images
+- [x] Copy into project assets (project-relative imports — no absolute paths at runtime)
+- [x] Present READY / ALERT / FIND SAFETY as alternating editorial journey steps with the specified captions
+- [x] EVACUATE (04) presented as a clearly-labelled future prototype placeholder
+- [x] Concept statement "Professional complexity becomes civilian simplicity" + WARN → GUIDE emphasised, LOCATE/RESCUE marked as next iteration
+- [x] Restrained agent chain visual (Platform → Public Agent → Citizen Agent → SOGN SAFE → Civilian)
+- [x] Lightbox for app screens; removed the old HTML phone mockup (app now exists as generated images)
+- [x] `wd audit` 100/100 on CivilianApp.tsx; production build passes; desktop + mobile browser-verified
+
+## Phase — WebDesigner visual reset (previous)
 
 Following the WebDesigner workflow: frontend-design → frontend-skill → design system → build → anti-slop review → browser QA.
 
