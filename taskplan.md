@@ -11,11 +11,12 @@ Source images inspected visually in `APPprototype/` (3 of the 4 journey screens 
 - `APPprototype/ChatGPT Image Sep 1, 2026, 09_01_14 PM.png` → `src/assets/app-ready.png` — SCREEN 01 READY (SAFE state, safe places, offline info, language)
 - `APPprototype/ChatGPT Image Sep 1, 2026, 09_02_37 PM.png` → `src/assets/app-alert.png` — SCREEN 02 ALERT (affected area, ~15 minutes, GO TO SAFETY / I NEED HELP)
 - `APPprototype/ChatGPT Image Sep 1, 2026, 09_03_48 PM.png` → `src/assets/app-find-safety.png` — SCREEN 03 FIND SAFETY (Flåm School, 650 m, 8 min, route map)
+- `~/Downloads/ChatGPT Image Sep 1, 2026, 09_31_34 PM.png` → `src/assets/app-evacuate.png` — SCREEN 04 EVACUATE (continue north, 120 m to turn, Flåm School 520 m / 6 min, blocked waterfront warning, persistent I NEED HELP) — added when the image became available; placeholder removed
 
 - [x] Inspect directory and visually analyse all images
 - [x] Copy into project assets (project-relative imports — no absolute paths at runtime)
 - [x] Present READY / ALERT / FIND SAFETY as alternating editorial journey steps with the specified captions
-- [x] EVACUATE (04) presented as a clearly-labelled future prototype placeholder
+- [x] EVACUATE (04) presented as a real prototype screen once the image was supplied; LOCATE / RESCUE remain clearly-labelled future screens
 - [x] Concept statement "Professional complexity becomes civilian simplicity" + WARN → GUIDE emphasised, LOCATE/RESCUE marked as next iteration
 - [x] Restrained agent chain visual (Platform → Public Agent → Citizen Agent → SOGN SAFE → Civilian)
 - [x] Lightbox for app screens; removed the old HTML phone mockup (app now exists as generated images)

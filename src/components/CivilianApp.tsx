@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import readyImg from '../assets/app-ready.png'
 import alertImg from '../assets/app-alert.png'
 import findSafetyImg from '../assets/app-find-safety.png'
+import evacuateImg from '../assets/app-evacuate.png'
 
 const screens = [
   {
@@ -28,6 +29,15 @@ const screens = [
     expl: 'The app identifies a confirmed safe location and shows only what matters to the civilian: where they are, what area to avoid and where they should go.',
     src: findSafetyImg,
     alt: 'SOGN SAFE nearest safe area screen: Flåm School, 650 m, 8 min walk, open and confirmed, with an approximate map showing the affected area, blocked waterfront, Safe Zone B and C, and START SAFE ROUTE',
+  },
+  {
+    no: '04',
+    word: 'Evacuate',
+    title: 'One instruction at a time',
+    expl: 'During evacuation, navigation becomes intentionally simple: the next movement, the safe destination and the danger area to avoid — with help available throughout.',
+    src: evacuateImg,
+    alt: 'SOGN SAFE evacuation navigation: continue north, turn left in 120 m, destination Flåm School safe area, 520 m and 6 minutes remaining, safe area open, map with safe zone, affected area and blocked waterfront, do not return toward the waterfront, and a persistent I NEED HELP button',
+    flip: true,
   },
 ]
 
@@ -87,31 +97,6 @@ export function CivilianApp() {
           </figure>
         ))}
 
-        {/* Future screens — deliberately not invented */}
-        <div className="journey-step reveal">
-          <div>
-            <div className="step-head">
-              <span className="step-no">04 /</span>
-              <h3>Evacuate</h3>
-            </div>
-            <p className="step-title">One instruction at a time</p>
-            <p className="step-expl">
-              During evacuation, navigation becomes intentionally simple: the next movement, the
-              safe destination and the danger area to avoid — with help available throughout.
-            </p>
-            <p className="step-expl" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fs-xs)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              Prototype image pending — next iteration
-            </p>
-          </div>
-          <div className="journey-media">
-            <div className="placeholder-frame">
-              <span className="ph-label">Future prototype screen</span>
-              <span className="ph-word">Evacuate</span>
-              <span className="ph-label">Not built yet — no image invented</span>
-            </div>
-          </div>
-        </div>
-
         <div className="concept-statement reveal">
           <p className="statement">Professional complexity becomes civilian simplicity.</p>
           <p className="section-intro" style={{ marginBottom: 'var(--sp-6)' }}>
@@ -125,8 +110,7 @@ export function CivilianApp() {
             <span className="next">→ LOCATE → RESCUE</span>
             <span className="dim"> · </span>
             <span className="next">LOCATE / RESCUE screens arrive with the next prototype iteration</span>
-          </p>
-        </div>
+          </p>        </div>
 
         <div className="reveal">
           <p className="eyebrow">Where the information comes from</p>
